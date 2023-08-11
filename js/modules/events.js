@@ -17,7 +17,9 @@ export const formEvents = (form, tasks) => {
 export const tableEvents = (table, tasks) => {
   table.tbody.addEventListener('click', e => {
     if (e.target.closest('.btn-danger')) {
-      tasks.removeTask(e.target.closest('tr'));
+      if (confirm('Действительно хотите удалить задачу?')) {
+        tasks.removeTask(e.target.closest('tr'));
+      }
     }
     if (e.target.closest('.btn-success')) {
       tasks.finishTask(e.target.closest('tr'));
