@@ -1,5 +1,11 @@
 import {STATUS} from './constants.js';
 
+const createHeader = (name) => {
+  const header = document.createElement('h3');
+  header.textContent = `Todo App: ${name}`;
+  return header;
+};
+
 const renderForm = () => {
   const form = document.createElement('form');
   form.classList.add('d-flex', 'align-items-center', 'mb-3');
@@ -115,11 +121,12 @@ const renderTable = () => {
   return table;
 };
 
-const renderApp = (selector) => {
+const renderApp = (selector, name) => {
   const app = document.querySelector(selector);
   app.classList.add('vh-100', 'w-100', 'd-flex',
       'align-items-center', 'justify-content-center', 'flex-column');
 
+  const header = createHeader(name);
   const form = renderForm();
   const table = renderTable();
   table.createRow = createRow.bind(table);
@@ -130,9 +137,7 @@ const renderApp = (selector) => {
   tWrapper.classList.add('table-wrapper');
   tWrapper.append(table);
 
-
-  app.append(form, tWrapper);
-
+  app.append(header, form, tWrapper);
 
   return {form, table};
 };

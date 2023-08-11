@@ -9,7 +9,7 @@ const todoApp = (function() {
     while (name.length === 0) {
       name = prompt('Ваше имя? ');
     }
-    const {form, table} = rn.renderApp(selector);
+    const {form, table} = rn.renderApp(selector, name);
     const storage = storServ.init(name);
     const tasks = taskObj.init(storage, table);
     formEvents(form, tasks);
