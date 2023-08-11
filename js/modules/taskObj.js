@@ -8,6 +8,8 @@ class TaskObj {
     this._loadTasks();
   }
 
+  _createId = () => Math.random().toString().substring(2, 12);
+
   _loadTasks() {
     const data = this._storage.getStorage();
     let i = 0;
