@@ -24,6 +24,7 @@ class TaskObj {
         id: this._createId(),
         task: data.task,
         status: STATUS.InProcess,
+        priority: data.priority,
       };
       const quantity = this._table.tbody.children.length;
       this._table.createRow(quantity + 1, record);
@@ -55,9 +56,8 @@ class TaskObj {
     const record = this._storage.getStorageById(id);
     if (record) {
       record.task = row.children[1].innerText;
-    //   this._table.setRowSuccess(row);
       this._storage.editStorage(id, record);
-    };
+    }
   }
 }
 

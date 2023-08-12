@@ -8,12 +8,21 @@ const createHeader = (name) => {
 
 const renderForm = () => {
   const form = document.createElement('form');
-  form.classList.add('d-flex', 'align-items-center', 'mb-3');
+  form.className = 'd-flex align-items-center mb-3';
 
   form.insertAdjacentHTML('beforeend', `
     <label class="form-group me-3 mb-0">
     <input type="text" class="form-control" placeholder="ввести задачу"
     name="task" id="task" required />
+    </label>
+
+    <label class="form-group me-3 mb-0">
+    <select class="form-select" name="priority" id="priority" required>
+        <option value="" selected>Важность задачи...</option>
+        <option value="table-light">Обычная</option>
+        <option value="table-warning">Важная</option>
+        <option value="table-danger">Срочная</option>
+    </select>
     </label>
 
     <button type="submit" class="btn btn-primary me-3" disabled>
@@ -40,9 +49,16 @@ const createRowBtns = (params) => {
 };
 
 // eslint-disable-next-line require-jsdoc
-function createRow(num, {id, task, status}) {
+function createRow(num, {id, task, status, priority}) {
   const tr = document.createElement('tr');
-  tr.classList.add('table-light');
+  if (priority) {
+    tr.classList.add(priority);
+  } else {
+    tr.classList.add('table-light');
+  }
+  // tr.classList.add('table-light');
+  // tr.classList.add(priority);
+
   tr.dataset.id = id;
 
   const tdNum = document.createElement('td');
@@ -70,7 +86,7 @@ function createRow(num, {id, task, status}) {
   ]);
 
   if (status === STATUS.Finished) {
-    tr.classList.remove('table-light');
+    tr.className = '';
     tr.classList.add('table-success');
     tdTask.classList.add('text-decoration-line-through');
     btns[1].disabled = true;
@@ -98,7 +114,7 @@ function reCount() {
 
 // eslint-disable-next-line require-jsdoc
 function setRowSuccess(row) {
-  row.classList.remove('table-light');
+  row.className = '';
   row.classList.add('table-success');
   row.children[1].classList.add('text-decoration-line-through');
   row.children[3].children[1].disabled = true;
@@ -106,7 +122,7 @@ function setRowSuccess(row) {
 
 const renderTable = () => {
   const table = document.createElement('table');
-  table.classList.add('table', 'table-hover', 'table-bordered');
+  table.className = 'table table-hover table-bordered';
 
   const thead = document.createElement('thead');
   thead.insertAdjacentHTML('beforeend', `

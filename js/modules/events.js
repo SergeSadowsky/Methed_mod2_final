@@ -1,16 +1,17 @@
 // eslint-disable-next-line require-jsdoc
 const tdTaskEvent = (e) => {
   if (e.which === 13) {
-    console.log(e.target);
     tdTaskEvent.tasks.updateTask(e.target.parentNode);
     e.target.removeEventListener('keypress', tdTaskEvent);
     e.target.blur();
+    e.target.contentEditable = false;
   }
 };
 
 export const formEvents = (form, tasks) => {
+  const btnSubmit = form[2];
   form.task.addEventListener('change', e => {
-    form[1].disabled = !(e.target.value.length > 0);
+    btnSubmit.disabled = !(e.target.value.length > 0);
   });
 
   form.addEventListener('submit', e => {
@@ -19,7 +20,7 @@ export const formEvents = (form, tasks) => {
     const task = Object.fromEntries(formData);
     tasks.addTask(task);
     form.reset();
-    form[1].disabled = true;
+    btnSubmit.disabled = true;
   });
 };
 
