@@ -1,30 +1,23 @@
-// eslint-disable-next-line require-jsdoc
-const tdTaskEvent = (e) => {
-  if (e.which === 13) {
-    tdTaskEvent.tasks.updateTask(e.target.parentNode);
-    e.target.removeEventListener('keypress', tdTaskEvent);
-    e.target.blur();
-    e.target.contentEditable = false;
-  }
-};
-
 export const modalEvents = (modal, selector, start) => {
-  const btnOk = modal.querySelector('#Ok');
-  const userNameInput = modal.querySelector('#userName');
-  userNameInput.addEventListener('change', e => {
-    btnOk.disabled = !(e.target.value.length > 0);
-  });
+  const form = modal.querySelector('form');
+  const btnOk = form.querySelector('#btnOk');
 
-  btnOk.addEventListener('click', e => {
-    const user = userNameInput.value;
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const user = form.userName.value;
     modal.closeModal();
     start(selector, user);
+  });
+
+  form.userName.addEventListener('input', e => {
+    btnOk.disabled = !(e.target.value.length > 0);
   });
 };
 
 export const formEvents = (form, tasks) => {
   const btnSubmit = form[2];
-  form.task.addEventListener('change', e => {
+
+  form.task.addEventListener('input', e => {
     btnSubmit.disabled = !(e.target.value.length > 0);
   });
 
@@ -46,14 +39,27 @@ export const tableEvents = (table, tasks) => {
       }
     }
     if (e.target.closest('.btn-success')) {
-      tasks.finishTask(e.target.closest('tr'));
+      const tr = e.target.closest('tr');
+      if (tr.classList.contains('table-success')) {
+        tasks.restoreTask(tr);
+        e.target.textContent = 'Завершить';
+      } else {
+        tasks.finishTask(tr);
+        e.target.textContent = 'Возобновить';
+      }
     }
     if (e.target.closest('.btn-primary')) {
       const td = e.target.closest('tr').children[1];
-      td.contentEditable = true;
-      tdTaskEvent.tasks = tasks;
-      td.addEventListener('keypress', tdTaskEvent);
-      td.focus();
+      if (td.contentEditable === 'true') {
+        e.target.textContent = 'Редактировать';
+        tasks.updateTask(e.target.closest('tr'));
+        td.blur();
+        td.contentEditable = false;
+      } else {
+        e.target.textContent = 'Сохранить';
+        td.contentEditable = true;
+        td.focus();
+      }
     }
   });
 };

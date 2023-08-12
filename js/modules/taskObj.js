@@ -46,7 +46,17 @@ class TaskObj {
     const record = this._storage.getStorageById(id);
     if (record) {
       record.status = STATUS.Finished;
-      this._table.setRowSuccess(row);
+      this._table.setRowSuccess(row, record.status);
+      this._storage.editStorage(id, record);
+    }
+  }
+
+  restoreTask(row) {
+    const id = row.dataset.id;
+    const record = this._storage.getStorageById(id);
+    if (record) {
+      record.status = STATUS.InProcess;
+      this._table.setRowInprocess(row, record.status, record.priority);
       this._storage.editStorage(id, record);
     }
   }
@@ -55,7 +65,8 @@ class TaskObj {
     const id = row.dataset.id;
     const record = this._storage.getStorageById(id);
     if (record) {
-      record.task = row.children[1].innerText;
+      // eslint-disable-next-line max-len
+      record.task = row.children[1].innerText.replace(/(?:\r\n|\r|\n)/g, '<br/>');
       this._storage.editStorage(id, record);
     }
   }

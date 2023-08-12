@@ -4,14 +4,14 @@ import * as storServ from './modules/storageService.js';
 import {formEvents, tableEvents, modalEvents} from './modules/events.js';
 
 const todoApp = (function() {
-  const start =(selector, name) => {
+  const start = (selector, name) => {
     const {form, table} = rn.renderApp(selector, name);
     const storage = storServ.init(name);
     const tasks = taskObj.init(storage, table);
     formEvents(form, tasks);
     tableEvents(table, tasks);
   };
-  
+
   const init = (selector) => {
     const modal = rn.renderModal(selector);
     modalEvents(modal, selector, start);

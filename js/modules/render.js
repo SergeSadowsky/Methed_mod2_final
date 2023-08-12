@@ -56,16 +56,13 @@ function createRow(num, {id, task, status, priority}) {
   } else {
     tr.classList.add('table-light');
   }
-  // tr.classList.add('table-light');
-  // tr.classList.add(priority);
-
   tr.dataset.id = id;
 
   const tdNum = document.createElement('td');
   tdNum.textContent = num;
 
   const tdTask = document.createElement('td');
-  tdTask.textContent = task;
+  tdTask.innerHTML = task;
 
   const tdStatus = document.createElement('td');
   tdStatus.textContent = status;
@@ -85,11 +82,14 @@ function createRow(num, {id, task, status, priority}) {
     },
   ]);
 
+  btns[1].style.width = '140px';
+  btns[2].style.width = '140px';
+
   if (status === STATUS.Finished) {
     tr.className = '';
     tr.classList.add('table-success');
     tdTask.classList.add('text-decoration-line-through');
-    btns[1].disabled = true;
+    btns[1].textContent = 'Возобновить';
   }
 
   const tdBtns = document.createElement('td');
@@ -113,11 +113,19 @@ function reCount() {
 }
 
 // eslint-disable-next-line require-jsdoc
-function setRowSuccess(row) {
+function setRowSuccess(row, status) {
   row.className = '';
   row.classList.add('table-success');
   row.children[1].classList.add('text-decoration-line-through');
-  row.children[3].children[1].disabled = true;
+  row.children[2].textContent = status;
+}
+
+// eslint-disable-next-line require-jsdoc
+function setRowInprocess(row, status, priority) {
+  row.className = '';
+  row.classList.add(priority);
+  row.children[1].className = '';
+  row.children[2].textContent = status;
 }
 
 const renderTable = () => {
@@ -153,16 +161,16 @@ const createModal = () => {
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Ваше имя: </h5>
       </div>
+      <form>
       <div class="modal-body">
-        <form>
           <div class="mb-3">
             <input type="text" class="form-control" id="userName" name="userName">
           </div>
-        </form>
       </div>
       <div class="modal-footer">
-        <button id="Ok" type="button" class="btn btn-primary" disabled>ОK</button>
+        <button id="btnOk" type="submit" class="btn btn-primary" disabled>ОK</button>
       </div>
+      </form>
     </div>
   </div>
 
@@ -209,6 +217,7 @@ const renderApp = (selector, name) => {
   table.createRow = createRow.bind(table);
   table.reCount = reCount.bind(table);
   table.setRowSuccess = setRowSuccess;
+  table.setRowInprocess = setRowInprocess;
 
   const tWrapper = document.createElement('div');
   tWrapper.classList.add('table-wrapper');
