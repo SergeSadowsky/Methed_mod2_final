@@ -60,8 +60,12 @@ function createRow(num, {id, task, status}) {
       text: 'Удалить',
     },
     {
-      className: 'btn btn-success',
+      className: 'btn btn-success me-3',
       text: 'Завершить',
+    },
+    {
+      className: 'btn btn-primary',
+      text: 'Редактировать',
     },
   ]);
 

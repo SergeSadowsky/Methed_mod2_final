@@ -1,3 +1,12 @@
+// eslint-disable-next-line require-jsdoc
+const tdTaskEvent = (e) => {
+  if (e.which === 13) {
+    console.log(e.target);
+    tdTaskEvent.tasks.updateTask(e.target.parentNode);
+    e.target.removeEventListener('keypress', tdTaskEvent);
+    e.target.blur();
+  }
+};
 
 export const formEvents = (form, tasks) => {
   form.task.addEventListener('change', e => {
@@ -23,6 +32,13 @@ export const tableEvents = (table, tasks) => {
     }
     if (e.target.closest('.btn-success')) {
       tasks.finishTask(e.target.closest('tr'));
+    }
+    if (e.target.closest('.btn-primary')) {
+      const td = e.target.closest('tr').children[1];
+      td.contentEditable = true;
+      tdTaskEvent.tasks = tasks;
+      td.addEventListener('keypress', tdTaskEvent);
+      td.focus();
     }
   });
 };

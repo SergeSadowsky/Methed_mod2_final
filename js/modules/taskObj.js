@@ -49,6 +49,16 @@ class TaskObj {
       this._storage.editStorage(id, record);
     }
   }
+
+  updateTask(row) {
+    const id = row.dataset.id;
+    const record = this._storage.getStorageById(id);
+    if (record) {
+      record.task = row.children[1].innerText;
+    //   this._table.setRowSuccess(row);
+      this._storage.editStorage(id, record);
+    };
+  }
 }
 
 export const init = (storage, table) => new TaskObj(storage, table);
