@@ -8,6 +8,20 @@ const tdTaskEvent = (e) => {
   }
 };
 
+export const modalEvents = (modal, selector, start) => {
+  const btnOk = modal.querySelector('#Ok');
+  const userNameInput = modal.querySelector('#userName');
+  userNameInput.addEventListener('change', e => {
+    btnOk.disabled = !(e.target.value.length > 0);
+  });
+
+  btnOk.addEventListener('click', e => {
+    const user = userNameInput.value;
+    modal.closeModal();
+    start(selector, user);
+  });
+};
+
 export const formEvents = (form, tasks) => {
   const btnSubmit = form[2];
   form.task.addEventListener('change', e => {

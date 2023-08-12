@@ -141,6 +141,62 @@ const renderTable = () => {
   return table;
 };
 
+const createModal = () => {
+  const modal = document.createElement('div');
+  modal.classList.add('modal', 'fade');
+  modal.id = 'myModal';
+  modal.tabIndex = -1;
+  modal.insertAdjacentHTML('beforeend', `
+  
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ваше имя: </h5>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <input type="text" class="form-control" id="userName" name="userName">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="Ok" type="button" class="btn btn-primary" disabled>ОK</button>
+      </div>
+    </div>
+  </div>
+
+  `);
+  return modal;
+};
+
+// eslint-disable-next-line require-jsdoc
+function openModal() {
+  // eslint-disable-next-line no-invalid-this
+  this.classList.add('show');
+  // eslint-disable-next-line no-invalid-this
+  this.style.display = 'block';
+}
+
+// eslint-disable-next-line require-jsdoc
+function closeModal() {
+  // eslint-disable-next-line no-invalid-this
+  this.classList.remove('show');
+  // eslint-disable-next-line no-invalid-this
+  this.style.display = 'none';
+}
+
+const renderModal = (selector) => {
+  const app = document.querySelector(selector);
+  const modal = createModal();
+
+  modal.openModal = openModal.bind(modal);
+  modal.closeModal = closeModal.bind(modal);
+
+  app.append(modal);
+  return modal;
+};
+
 const renderApp = (selector, name) => {
   const app = document.querySelector(selector);
   app.classList.add('vh-100', 'w-100', 'd-flex',
@@ -149,6 +205,7 @@ const renderApp = (selector, name) => {
   const header = createHeader(name);
   const form = renderForm();
   const table = renderTable();
+
   table.createRow = createRow.bind(table);
   table.reCount = reCount.bind(table);
   table.setRowSuccess = setRowSuccess;
@@ -158,9 +215,8 @@ const renderApp = (selector, name) => {
   tWrapper.append(table);
 
   app.append(header, form, tWrapper);
-
   return {form, table};
 };
 
-export {renderApp};
+export {renderApp, renderModal};
 
